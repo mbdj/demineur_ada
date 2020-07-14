@@ -1,3 +1,9 @@
+--
+-- mehdi
+-- 14/07/2020
+--
+-- table générique en 2 dimensions
+--
 generic
    type Contenu is private;
 
