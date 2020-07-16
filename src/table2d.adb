@@ -8,7 +8,7 @@ package body Table2d is
    procedure Set (T     	: in out Table2d;
                   Ligne   	: in Index;
                   Colonne 	: in Index;
-      				 Item 		: in Contenu) is
+                  Item 		: in Contenu) is
    begin
       T(Ligne, Colonne) := Item;
    end Set;

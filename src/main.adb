@@ -1,7 +1,6 @@
 with Table2d;
 
-with case_grille;
-use case_grille;
+with Type_case;  use Type_case;
 with Type_Index; use Type_Index;
 
 procedure Main is
@@ -13,8 +12,8 @@ procedure Main is
    Nbre_colonnes : constant Index := 20;
 
    package Grille_Joueur is new Table2d(Contenu         => case_grille_joueur,
-                                             Nombre_Lignes   => Nbre_lignes,
-                                             Nombre_Colonnes => Nbre_colonnes);
+                                        Nombre_Lignes   => Nbre_lignes,
+                                        Nombre_Colonnes => Nbre_colonnes);
 
    package Grille_Jeu is new  Table2d(Contenu         => case_grille_joueur,
                                       Nombre_Lignes   => Nbre_lignes,
