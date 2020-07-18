@@ -10,7 +10,7 @@ package body Table2d is
                   Colonne 	: in Index;
                   Item 		: in Contenu) is
    begin
-      T(Ligne, Colonne) := Item;
+      T.table(Ligne, Colonne) := Item;
    end Set;
 
    ---------
@@ -21,7 +21,7 @@ package body Table2d is
                  Ligne   	: in Index;
                  Colonne 	: in Index) return Contenu is
    begin
-      return T(Ligne, Colonne);
+      return T.table(Ligne, Colonne);
    end Get;
 
 end Table2d;
