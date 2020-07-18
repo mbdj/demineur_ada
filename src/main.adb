@@ -1,5 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
+
 with Grilles; use Grilles;
+
 
 with Type_case;  use Type_case;
 
