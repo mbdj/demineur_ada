@@ -1,5 +1,5 @@
 pragma Ada_2012;
-package body Table2d is
+package body Table2d_pack is
 
    ---------
    -- Set --
@@ -24,4 +24,4 @@ package body Table2d is
       return T.table(Ligne, Colonne);
    end Get;
 
-end Table2d;
+end Table2d_pack;

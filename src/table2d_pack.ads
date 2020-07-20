@@ -10,7 +10,7 @@ generic
    Nombre_Lignes : 	Index :=10;
    Nombre_colonnes :	Index := 10;
 
-package Table2d is
+package Table2d_pack is
 
    type Table2d is tagged private;	-- tagged private permet d'utiliser la notation pointée dans les appels de méthodes
 
@@ -27,6 +27,7 @@ private
    -- record nécessaire pour un type tagged
    type Table2d is tagged record
       table : array2d; -- nb : on ne peut pas mettre ici un array anomyne => d'où le type array2d
+      -- implémentation de Table2d
    end record;
 
-end Table2d;
+end Table2d_pack;

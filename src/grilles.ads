@@ -1,6 +1,6 @@
 with Type_Index; use Type_Index;
 with Type_case; use Type_case;
-with Table2d; 
+with Table2d_pack; 
 
 package Grilles is
 
@@ -11,7 +11,7 @@ package Grilles is
    -- Grille_Joueur --
    -------------------
 
-   package Grille_Joueur is new Table2d(Contenu         => case_grille_joueur,
+   package Grille_Joueur is new Table2d_pack(Contenu         => case_grille_joueur,
                                         Nombre_Lignes   => Nbre_lignes,
                                         Nombre_Colonnes => Nbre_colonnes);
 
@@ -23,9 +23,9 @@ package Grilles is
    -- Grille_Jeu --
    ----------------
 
-   package Grille_Jeu is new  Table2d(Contenu         => case_grille_joueur,
-                                      Nombre_Lignes   => Nbre_lignes,
-                                      Nombre_Colonnes => Nbre_colonnes);
+   package Grille_Jeu is new  Table2d_pack(Contenu         => case_grille_joueur,
+                                           Nombre_Lignes   => Nbre_lignes,
+                                           Nombre_Colonnes => Nbre_colonnes);
    use Grille_Jeu;
 
    grille_de_jeu : Grille_Jeu.Table2d;
