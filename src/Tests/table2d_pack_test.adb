@@ -26,6 +26,7 @@ package body Table2d_pack_test is
       use Test_Cases.Registration;
    begin
       Register_Routine(T, Test_Set_Get'Access, "Test Set et Get");
+      Register_Routine(T, Test_Get'Access, "Test Get");
    end Register_Tests;
 
    ----------
@@ -59,7 +60,7 @@ package body Table2d_pack_test is
    procedure Test_Get (T : in out Test_Cases.Test_Case'Class) is
    begin
       Assert(T2d.Get(Ligne => 1, Colonne => 5) = 5,
-             "Get /= Set");
+             "Test_Get : Get KO");
    end Test_Get;
 
 
@@ -70,7 +71,7 @@ package body Table2d_pack_test is
               Item    => 12);
 
       Assert(T2d.Get(Ligne => 1, Colonne => 1) = 12,
-             "Get /= Set");
+             "Test_Set_Get : Get /= Set");
    end Test_Set_Get;
 
 end Table2d_pack_test;
