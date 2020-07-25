@@ -15,5 +15,6 @@ package Table2d_pack_test is
    -- liste des tests
    procedure Test_Set_Get (T : in out Test_Cases.Test_Case'Class);
    procedure Test_Get (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Exception_Set_Zero (T : in out Test_Cases.Test_Case'Class); 
    
 end Table2d_pack_test;

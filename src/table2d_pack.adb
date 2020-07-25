@@ -1,6 +1,8 @@
 pragma Ada_2012;
 package body Table2d_pack is
 
+   --  function Mauvais_Index(T : in Table2d; Ligne:Index; Colonne:Index) return Boolean;
+
    ---------
    -- Set --
    ---------
@@ -12,6 +14,7 @@ package body Table2d_pack is
    begin
       T.table(Ligne, Colonne) := Item;
    end Set;
+
 
    ---------
    -- Get --

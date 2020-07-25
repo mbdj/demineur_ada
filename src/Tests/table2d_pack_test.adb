@@ -1,3 +1,7 @@
+--------------
+-- Ada_2012 --
+--------------
+
 pragma Ada_2012;
 with Table2d_pack;
 with AUnit.Assertions; use AUnit.Assertions;
@@ -25,8 +29,10 @@ package body Table2d_pack_test is
    procedure Register_Tests (T : in out Table2d_test_case) is
       use Test_Cases.Registration;
    begin
+      -- Ici on enregistre toutes les routines de test
       Register_Routine(T, Test_Set_Get'Access, "Test Set et Get");
       Register_Routine(T, Test_Get'Access, "Test Get");
+      Register_Routine(T, Test_Exception_Set_Zero'Access, "Test exception Erreur_Index");
    end Register_Tests;
 
    ----------
@@ -63,6 +69,9 @@ package body Table2d_pack_test is
              "Test_Get : Get KO");
    end Test_Get;
 
+   ------------------
+   -- Test_Set_Get --
+   ------------------
 
    procedure Test_Set_Get (T : in out Test_Cases.Test_Case'Class) is
    begin
@@ -73,5 +82,39 @@ package body Table2d_pack_test is
       Assert(T2d.Get(Ligne => 1, Colonne => 1) = 12,
              "Test_Set_Get : Get /= Set");
    end Test_Set_Get;
+
+
+
+   -----------------------------
+   -- Test_Exception_Set_Zero --
+   -----------------------------
+
+   procedure Provoque_Exception_Set_Ligne_zero is
+   begin
+      T2d.Set(Ligne => 0, Colonne => 1, Item => 5);
+   end Provoque_Exception_Set_Ligne_zero;
+
+--
+-- Première façon de faire mais on ne sait pas quelle exception est levée
+--
+
+--     procedure Test_Exception_Set_Zero (T : in out Test_Cases.Test_Case'Class) is
+--     begin
+--        Assert_Exception(Proc    => Provoque_Exception_Set_Ligne_zero'Access,
+--                         Message => "Pas d'exception de Set() avec ligne 0");
+--     end Test_Exception_Set_Zero;
+
+
+   procedure Test_Exception_Set_Zero (T : in out Test_Cases.Test_Case'Class) is
+   begin
+      Provoque_Exception_Set_Ligne_zero;
+      Assert(False,"Pas d'exception de Set() avec ligne 0");
+
+   exception
+      when Constraint_Error =>
+         null;
+      when others =>
+         Assert(False,"Autre exception que Constraint_Error dans Set() avec ligne 0");
+   end Test_Exception_Set_Zero;
 
 end Table2d_pack_test;

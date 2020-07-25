@@ -1,5 +1,6 @@
 --
 -- mehdi
+--
 -- 14/07/2020
 --
 -- table générique en 2 dimensions
@@ -14,10 +15,10 @@ package Table2d_pack is
 
    type Table2d is tagged private;	-- tagged private permet d'utiliser la notation pointée dans les appels de méthodes
 
-   Procedure	Set (  T : in out Table2d;  Ligne : in Index;   Colonne : in Index;   Item : in Contenu);
+   Procedure	Set (  T : in out Table2d;  Ligne : in Index;   Colonne : in Index;   Item : in Contenu );
    -- affecter un élément dans la grille
 
-   Function	Get (  T : in Table2d;  Ligne : in Index;   Colonne : in Index) return Contenu;
+   Function	Get (  T : in Table2d;  Ligne : in Index;   Colonne : in Index ) return Contenu;
    -- récupérer un élément dans la grille
 
 private
