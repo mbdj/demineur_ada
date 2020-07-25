@@ -3,6 +3,7 @@
 --------------
 
 pragma Ada_2012;
+with Ada.Text_IO; use Ada.Text_IO;
 with Table2d_pack;
 with AUnit.Assertions; use AUnit.Assertions;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
@@ -13,10 +14,12 @@ package body Table2d_pack_test is
    --------------
    -- Fixtures --
    --------------
+   procedure Afficher (i: Integer) is
+   begin
+      Put(i'Image);
+   end Afficher;
 
-   package Table_Integer_pack is new Table2d_pack(Contenu         => Integer,
-                                                  Nombre_Lignes   => 10,
-                                                  Nombre_colonnes => 10);
+   package Table_Integer_pack is new Table2d_pack(Contenu => Integer, Afficher => Afficher);
 
    T2d : Table_Integer_pack.Table2d;
    -- table d'Integer pour les tests
