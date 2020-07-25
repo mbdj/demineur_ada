@@ -4,16 +4,17 @@ with Table2d_pack;
 
 package Grilles is
 
-   Nbre_lignes   : constant Index := 20;
-   Nbre_colonnes : constant Index := 20;
+   Nbre_lignes   : constant Index := 5;
+   Nbre_colonnes : constant Index := 10;
    
    -------------------
    -- Grille_Joueur --
    -------------------
 
-   package Grille_Joueur is new Table2d_pack(Contenu         => case_grille_joueur,
-                                        Nombre_Lignes   => Nbre_lignes,
-                                        Nombre_Colonnes => Nbre_colonnes);
+   package Grille_Joueur is new Table2d_pack(Contenu 			=> case_grille_joueur,
+                                             Afficher        => Afficher_Grille_Joueur,
+                                             Nombre_Lignes   => Nbre_lignes,
+                                             Nombre_Colonnes => Nbre_colonnes);
 
    use Grille_Joueur;
 
@@ -23,9 +24,10 @@ package Grilles is
    -- Grille_Jeu --
    ----------------
 
-   package Grille_Jeu is new  Table2d_pack(Contenu         => case_grille_joueur,
-                                           Nombre_Lignes   => Nbre_lignes,
-                                           Nombre_Colonnes => Nbre_colonnes);
+   package Grille_Jeu is new  Table2d_pack(Contenu				=> case_grille_jeu,
+                                           Afficher 			=> Afficher_Grille_Jeu,
+                                           Nombre_Lignes		=> Nbre_lignes,
+                                           Nombre_Colonnes	=> Nbre_colonnes);
    use Grille_Jeu;
 
    grille_de_jeu : Grille_Jeu.Table2d;

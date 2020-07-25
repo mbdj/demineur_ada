@@ -1,7 +1,6 @@
 pragma Ada_2012;
+with Ada.Text_IO; use Ada.Text_IO;
 package body Table2d_pack is
-
-   --  function Mauvais_Index(T : in Table2d; Ligne:Index; Colonne:Index) return Boolean;
 
    ---------
    -- Set --
@@ -26,5 +25,21 @@ package body Table2d_pack is
    begin
       return T.table(Ligne, Colonne);
    end Get;
+
+
+   --------------
+   -- Afficher --
+   --------------
+
+   procedure Afficher (T : in Table2d) is
+   begin
+      for l in 1..Nombre_Lignes loop
+         for c in 1..Nombre_colonnes loop
+            Afficher(T.Get(Ligne => l, Colonne => c));
+         end loop;
+         New_Line;
+      end loop;
+   end Afficher;
+
 
 end Table2d_pack;

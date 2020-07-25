@@ -7,8 +7,9 @@ package body Type_case is
    --------------
 
    procedure Afficher_Grille_Joueur (c : case_grille_joueur) is
+      -- Affiche la grille du joueur
    begin
-      Put(c'Image);
+      Put(String(c'Image)(1));
    end Afficher_Grille_Joueur;
 
    --------------
@@ -16,8 +17,9 @@ package body Type_case is
    --------------
 
    procedure Afficher_Grille_Jeu (c : case_grille_jeu) is
+      -- Affiche la grille de jeu
    begin
-      Put(c'Image);
+      Put(String(c'Image)(1));
    end Afficher_Grille_Jeu;
 
 end Type_case;

@@ -8,8 +8,9 @@
 with Type_Index; use Type_Index;
 generic
    type Contenu is private;
-   Nombre_Lignes : 	Index :=10;
-   Nombre_colonnes :	Index := 10;
+   with procedure Afficher (c: Contenu) is <>;
+   Nombre_Lignes		: Index := 10;
+   Nombre_colonnes	: Index := 10;
 
 package Table2d_pack is
 
@@ -20,6 +21,9 @@ package Table2d_pack is
 
    Function	Get (  T : in Table2d;  Ligne : in Index;   Colonne : in Index ) return Contenu;
    -- récupérer un élément dans la grille
+
+   procedure Afficher (T : in Table2d);
+   -- affiche la Table2d
 
 private
 
