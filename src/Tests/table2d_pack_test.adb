@@ -89,14 +89,20 @@ package body Table2d_pack_test is
    -- Test_Exception_Set_Zero --
    -----------------------------
 
-   procedure Provoque_Exception_Set_Ligne_zero is
-   begin
-      T2d.Set(Ligne => 0, Colonne => 1, Item => 5);
-   end Provoque_Exception_Set_Ligne_zero;
 
 --
 -- Première façon de faire mais on ne sait pas quelle exception est levée
 --
+
+   --
+   --  NB : La procedure Provoque_Exception_Set_Ligne_zero ne peut pas être dans la procedure de Test à cause de l'accès 'Access
+   --
+
+--  procedure Provoque_Exception_Set_Ligne_zero is
+--  begin
+--     T2d.Set(Ligne => 0, Colonne => 1, Item => 5);
+--  end Provoque_Exception_Set_Ligne_zero;
+
 
 --     procedure Test_Exception_Set_Zero (T : in out Test_Cases.Test_Case'Class) is
 --     begin
@@ -106,6 +112,11 @@ package body Table2d_pack_test is
 
 
    procedure Test_Exception_Set_Zero (T : in out Test_Cases.Test_Case'Class) is
+      procedure Provoque_Exception_Set_Ligne_zero is
+      begin
+         T2d.Set(Ligne => 0, Colonne => 1, Item => 5);
+      end Provoque_Exception_Set_Ligne_zero;
+
    begin
       Provoque_Exception_Set_Ligne_zero;
       Assert(False,"Pas d'exception de Set() avec ligne 0");
