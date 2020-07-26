@@ -1,7 +1,5 @@
 with "aunit.gpr";
 
--- with "gtkada";
-
 project Demineur is
 
    for Source_Dirs use ("src/**");
