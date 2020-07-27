@@ -31,7 +31,7 @@ package body Table2d_pack is
    -- Afficher --
    --------------
 
-   procedure Afficher (T : in Table2d) is
+   procedure Afficher (T : in Table2d'Class) is
    begin
       for l in 1..Nombre_Lignes loop
          for c in 1..Nombre_colonnes loop

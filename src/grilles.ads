@@ -4,8 +4,10 @@ with Table2d_pack;
 
 package Grilles is
 
-   Nbre_lignes   : constant Index := 5;
+   
+   Nbre_lignes   : constant Index := 15;
    Nbre_colonnes : constant Index := 10;
+   Nbre_Mines		: constant Positive := 5;
    
    -------------------
    -- Grille_Joueur --
@@ -19,6 +21,7 @@ package Grilles is
    use Grille_Joueur;
 
    grille_du_joueur : Grille_Joueur.Table2d;
+   
 
    ----------------
    -- Grille_Jeu --
@@ -32,6 +35,7 @@ package Grilles is
 
    grille_de_jeu : Grille_Jeu.Table2d;
    
-      
+   procedure Remplir_Mines (T: in out Grille_Jeu.Table2d ; nombre : Positive);
+   -- Remplit la grille de jeu avec le nombre de mines spécifié
 
 end Grilles;

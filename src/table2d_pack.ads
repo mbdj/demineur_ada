@@ -12,6 +12,7 @@ generic
    Nombre_Lignes		: Index := 10;
    Nombre_colonnes	: Index := 10;
 
+
 package Table2d_pack is
 
    type Table2d is tagged private;	-- tagged private permet d'utiliser la notation pointée dans les appels de méthodes
@@ -22,8 +23,8 @@ package Table2d_pack is
    Function	Get (  T : in Table2d;  Ligne : in Index;   Colonne : in Index ) return Contenu;
    -- récupérer un élément dans la grille
 
-   procedure Afficher (T : in Table2d);
-   -- affiche la Table2d
+   procedure Afficher (T : in Table2d'Class);
+   -- affiche le contenu de la Table2d dans la console
 
 private
 
