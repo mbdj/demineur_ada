@@ -10,4 +10,17 @@ project Demineur is
       for Vcs_Kind use "git";
    end Ide;
 
+   package Builder is
+      for Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Switches ("ada") use ("-g");
+   end Compiler;
+
+   package Linker is
+      for Switches ("ada") use ("-g");
+   end Linker;
+
 end Demineur;
+

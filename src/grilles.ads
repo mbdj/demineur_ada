@@ -12,7 +12,7 @@ package Grilles is
    -------------------
 
    package Grille_Joueur is new Table2d_pack(Contenu 			=> case_grille_joueur,
-                                             Afficher        => Afficher_Grille_Joueur,
+                                             Afficher        => Afficher_Case_Joueur,
                                              Nombre_Lignes   => Nbre_lignes,
                                              Nombre_Colonnes => Nbre_colonnes);
 
@@ -25,12 +25,13 @@ package Grilles is
    ----------------
 
    package Grille_Jeu is new  Table2d_pack(Contenu				=> case_grille_jeu,
-                                           Afficher 			=> Afficher_Grille_Jeu,
+                                           Afficher 			=> Afficher_Case_Jeu,
                                            Nombre_Lignes		=> Nbre_lignes,
                                            Nombre_Colonnes	=> Nbre_colonnes);
    use Grille_Jeu;
 
    grille_de_jeu : Grille_Jeu.Table2d;
    
+      
 
 end Grilles;

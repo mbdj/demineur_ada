@@ -6,20 +6,20 @@ package body Type_case is
    -- Afficher --
    --------------
 
-   procedure Afficher_Grille_Joueur (c : case_grille_joueur) is
+   procedure Afficher_Case_Joueur (c : case_grille_joueur) is
       -- Affiche la grille du joueur
    begin
       Put(String(c'Image)(1));
-   end Afficher_Grille_Joueur;
+   end Afficher_Case_Joueur;
 
    --------------
    -- Afficher --
    --------------
 
-   procedure Afficher_Grille_Jeu (c : case_grille_jeu) is
+   procedure Afficher_Case_Jeu (c : case_grille_jeu) is
       -- Affiche la grille de jeu
    begin
       Put(String(c'Image)(1));
-   end Afficher_Grille_Jeu;
+   end Afficher_Case_Jeu;
 
 end Type_case;
