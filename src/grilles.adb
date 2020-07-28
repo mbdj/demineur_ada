@@ -2,6 +2,66 @@ with Ada.Numerics.Discrete_Random;
 package body Grilles is
 
 
+   function Nbre_Mines_Autour (T: in out Grille_Jeu.Table2d ; l, c : Index) return Integer is
+      nbre_mines : Integer := 0;
+   begin
+
+      if l < 1 or l > Nbre_Lignes or c < 1 or c > Nbre_Colonnes then
+         raise Constraint_Error;
+      end if;
+
+      -- on traite la ligne l-1 (au dessus de la ligne courante)
+      if l > 1 then
+
+         if c > 1 and then T.Get(l - 1, c - 1) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+
+         if T.Get(l - 1, c) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+
+         if c < Nbre_Colonnes and then T.Get(l - 1, c + 1) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+
+      end if;
+      -- on traite la ligne l-1 (au dessus de la ligne courante)
+
+
+      -- on traite la ligne l
+      if c > 1 and then  T.Get(l , c - 1) = MINE then
+         nbre_mines := nbre_mines + 1;
+      end if;
+
+      if c < Nbre_Colonnes and then T.Get(l , c + 1) = MINE then
+         nbre_mines := nbre_mines + 1;
+      end if;
+      -- on traite la ligne l
+
+
+      -- on traite la ligne l+1 (au dessous de la ligne courante)
+      if l < Nbre_Lignes then
+
+         if c > 1 and then T.Get(l + 1, c - 1) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+
+         if T.Get(l + 1, c) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+
+         if c < Nbre_Colonnes and then T.Get(l + 1, c + 1) = MINE then
+            nbre_mines := nbre_mines + 1;
+         end if;
+         -- on traite la ligne l+1 (au dessous de la ligne courante)
+
+      end if;
+
+      return nbre_mines;
+   end;
+
+
    -------------------
    -- Remplir_Mines --
    -------------------
@@ -46,9 +106,56 @@ package body Grilles is
          end if;
 
       end loop;
-   end;
 
 
+      -- Positionner les nombres de mines autour des mines
+      declare
+         mines_autour : Integer; -- nombre de mines autour d'une case
+      begin
+
+         for l in 1.. Nbre_lignes loop
+            for c in 1.. Nbre_colonnes loop
+               mines_autour :=  Nbre_Mines_Autour(T, l, c);
+
+               if T.Get(l,c) /= MINE then
+
+                  case mines_autour is
+                     when 0 =>
+                        null;
+                     when 1 =>
+                        T.Set(l , c , UN);
+                     when 2 =>
+                        T.Set(l , c , DEUX);
+                     when 3 =>
+                        T.Set(l , c , TROIS);
+                     when 4 =>
+                        T.Set(l , c , QUATRE);
+                     when 5 =>
+                        T.Set(l , c , CINQ);
+                     when 6 =>
+                        T.Set(l , c , SIX);
+                     when 7 =>
+                        T.Set(l , c , SEPT);
+                     when 8 =>
+                        T.Set(l , c , HUIT);
+                     when others =>
+                        null;
+                  end case;
+
+               end if;
+
+            end loop; -- lignes
+         end loop; -- colonnes
+
+      end;
+      -- Positionner les nombres de mines autour des mines
+
+   end Remplir_Mines;
+
+
+   -------------------------------
+   -- initialisation du package --
+   -------------------------------
 begin
    -- initialisation de la grille de jeu avec les mines
    Remplir_Mines(T => grille_de_jeu , nombre => Nbre_mines);
