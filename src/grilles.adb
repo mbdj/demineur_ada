@@ -1,6 +1,14 @@
 with Ada.Numerics.Discrete_Random;
 package body Grilles is
 
+   procedure inc (n : in out Integer)
+     with
+       Post => n = n'Old + 1
+   is
+   begin
+      n := n + 1;
+   end;
+
 
    function Nbre_Mines_Autour (T: in out Grille_Jeu.Table2d ; l, c : Index) return Integer is
       nbre_mines : Integer := 0;
@@ -14,15 +22,15 @@ package body Grilles is
       if l > 1 then
 
          if c > 1 and then T.Get(l - 1, c - 1) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
 
          if T.Get(l - 1, c) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
 
          if c < Nbre_Colonnes and then T.Get(l - 1, c + 1) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
 
       end if;
@@ -31,11 +39,11 @@ package body Grilles is
 
       -- on traite la ligne l
       if c > 1 and then  T.Get(l , c - 1) = MINE then
-         nbre_mines := nbre_mines + 1;
+         inc(nbre_mines);
       end if;
 
       if c < Nbre_Colonnes and then T.Get(l , c + 1) = MINE then
-         nbre_mines := nbre_mines + 1;
+         inc(nbre_mines);
       end if;
       -- on traite la ligne l
 
@@ -44,15 +52,15 @@ package body Grilles is
       if l < Nbre_Lignes then
 
          if c > 1 and then T.Get(l + 1, c - 1) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
 
          if T.Get(l + 1, c) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
 
          if c < Nbre_Colonnes and then T.Get(l + 1, c + 1) = MINE then
-            nbre_mines := nbre_mines + 1;
+            inc(nbre_mines);
          end if;
          -- on traite la ligne l+1 (au dessous de la ligne courante)
 
@@ -151,6 +159,22 @@ package body Grilles is
       -- Positionner les nombres de mines autour des mines
 
    end Remplir_Mines;
+
+
+   function Verifier_Contenu(T : in Grille_Jeu.Table2d) return Boolean is
+      -- pour la post condition de Remplir_Mines
+      -- vérifie que les cases sont bien des valeurs de case_grille_jeu
+   begin
+      for l in 1 .. Nbre_lignes loop
+         for c in 1.. Nbre_colonnes loop
+            if T.Get(l,c) not in case_grille_jeu'First .. case_grille_jeu'Last then
+               return False;
+            end if;
+         end loop;
+      end loop;
+
+      return True;
+   end;
 
 
    -------------------------------

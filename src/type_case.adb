@@ -2,16 +2,6 @@ pragma Ada_2012;
 with Ada.Text_IO; use Ada.Text_IO;
 package body Type_case is
 
-   --------------------------
-   -- Afficher_Case_Joueur --
-   --------------------------
-
-   procedure Afficher_Case_Joueur (c : case_grille_joueur) is
-      -- Affiche la grille du joueur
-   begin
-      Put(String(c'Image)(1));
-   end Afficher_Case_Joueur;
-
    -----------------------
    -- Afficher_Case_Jeu --
    -----------------------
@@ -46,5 +36,30 @@ package body Type_case is
             null;
       end case;
    end Afficher_Case_Jeu;
+
+
+
+   --------------------------
+   -- Afficher_Case_Joueur --
+   --------------------------
+
+   procedure Afficher_Case_Joueur (c : case_grille_joueur) is
+      -- Affiche la grille du joueur
+   begin
+      -- Put(String(c'Image)(1));
+
+      case c is
+         when CACHE =>
+            Put('.');
+         when VISIBLE =>
+            Put('V');
+         when DRAPEAU =>
+            Put('P');
+         when INTERROGATION =>
+            Put('?');
+         when others =>
+            null;
+      end case;
+   end Afficher_Case_Joueur;
 
 end Type_case;

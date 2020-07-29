@@ -15,7 +15,7 @@ project Demineur is
    end Builder;
 
    package Compiler is
-      for Switches ("ada") use ("-g");
+      for Switches ("ada") use ("-g", "-gnat12", "-gnata");
    end Compiler;
 
    package Linker is

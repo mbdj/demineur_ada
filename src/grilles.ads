@@ -1,3 +1,5 @@
+pragma Ada_2012;
+
 with Type_Index; use Type_Index;
 with Type_case; use Type_case;
 with Table2d_pack; 
@@ -34,8 +36,16 @@ package Grilles is
    use Grille_Jeu;
 
    grille_de_jeu : Grille_Jeu.Table2d;
+
    
-   procedure Remplir_Mines (T: in out Grille_Jeu.Table2d ; nombre : Positive);
+   function Verifier_Contenu (T : in Grille_Jeu.Table2d) return Boolean;
+   -- pour la post condition de Remplir_Mines
+   -- vérifie que les cases sont bien des valeurs de case_grille_jeu
+   
+   procedure Remplir_Mines (T: in out Grille_Jeu.Table2d ; nombre : Positive)
+     with  
+       Pre		=> nombre in 1 .. Positive(Nbre_lignes*Nbre_colonnes),  
+     	Post	=> Verifier_Contenu(T);
    -- Remplit la grille de jeu avec le nombre de mines spécifié
 
 end Grilles;

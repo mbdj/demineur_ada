@@ -8,7 +8,7 @@
 with Type_Index; use Type_Index;
 generic
    type Contenu is private;
-   with procedure Afficher (c: Contenu) is <>;
+   with procedure Afficher (c: Contenu) is <>;	-- procédure à définir lors de l'instanciation du package
    Nombre_Lignes		: Index := 10;
    Nombre_colonnes	: Index := 10;
 

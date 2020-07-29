@@ -57,7 +57,7 @@ package body Table2d_pack_test is
          for c in 1..10 loop
             T2d.Set(Ligne   => Index(l),
                     Colonne => Index(c),
-                    Item    => (l-1)*10+c);    -- 1ère ligne : 1 à 10 2ème ligne : 11 à 20, etc.
+                    Item    => (l-1)*10+c);    -- 1ère ligne : 1 à 10 ; 2ème ligne : 11 à 20, etc.
          end loop;
       end loop;
    end Set_Up;
