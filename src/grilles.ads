@@ -4,10 +4,18 @@ with Type_Index; use Type_Index;
 with Type_case; use Type_case;
 with Table2d_pack; 
 
+-- Ce package crée les 2 grilles :
+--   - la grille de jeu qui contient les mines et les nombres de mines autour
+--     Elle est cachée au joueur
+--   - la grille du joueur qui contient l'information des cases visibles ou cachées
+--     et des éléments positionnés par le joueur (interrogation, drapeau)
+--
+-- pour le contenu des grilles : voir type_case.ads
+  
 package Grilles is
 
    
-   Nbre_lignes   : constant Index := 15;
+   Nbre_lignes   : constant Index := 10;
    Nbre_colonnes : constant Index := 10;
    Nbre_Mines		: constant Positive := 5;
    
@@ -15,7 +23,7 @@ package Grilles is
    -- Grille_Joueur --
    -------------------
 
-   package Grille_Joueur is new Table2d_pack(Contenu 			=> case_grille_joueur,
+   package Grille_Joueur is new Table2d_pack(Contenu 			 => case_grille_joueur,
                                              Afficher        => Afficher_Case_Joueur,
                                              Nombre_Lignes   => Nbre_lignes,
                                              Nombre_Colonnes => Nbre_colonnes);
@@ -29,7 +37,7 @@ package Grilles is
    -- Grille_Jeu --
    ----------------
 
-   package Grille_Jeu is new  Table2d_pack(Contenu				=> case_grille_jeu,
+   package Grille_Jeu is new  Table2d_pack(Contenu			=> case_grille_jeu,
                                            Afficher 			=> Afficher_Case_Jeu,
                                            Nombre_Lignes		=> Nbre_lignes,
                                            Nombre_Colonnes	=> Nbre_colonnes);
@@ -47,5 +55,14 @@ package Grilles is
        Pre		=> nombre in 1 .. Positive(Nbre_lignes*Nbre_colonnes),  
      	Post	=> Verifier_Contenu(T);
    -- Remplit la grille de jeu avec le nombre de mines spécifié
+   
+   -- Détermine les cases visibles autour de la cas choisie de proche en proche
+   -- dans la grille de jeu 
+   procedure Déterminer_cases_visibles(ligne : in Index; colonne : in Index);
+   
+   -- Affiche la grille du joueur en fonction des cases rendues visibles :
+   -- Pour les cases rendues visibles dans la grille du joueur (VISIBLE)
+   -- on affiche les cases de la grille de jeu
+    procedure Afficher_Grille_Joueur;
 
 end Grilles;

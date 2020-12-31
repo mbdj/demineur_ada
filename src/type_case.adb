@@ -50,7 +50,7 @@ package body Type_case is
 
       case c is
          when CACHE =>
-            Put('.');
+            Put('X');
          when VISIBLE =>
             Put('V');
          when DRAPEAU =>
