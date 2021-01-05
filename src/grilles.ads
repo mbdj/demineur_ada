@@ -1,8 +1,12 @@
 pragma Ada_2012;
 
+with Gwindows.Drawing_Objects; use Gwindows.Drawing_Objects;
+with Gwindows; use Gwindows;
+
 with Type_Index; use Type_Index;
 with Type_case; use Type_case;
 with Table2d_pack; 
+with GWindows.Drawing_Panels; use GWindows.Drawing_Panels;
 
 -- Ce package crée les 2 grilles :
 --   - la grille de jeu qui contient les mines et les nombres de mines autour
@@ -18,6 +22,10 @@ package Grilles is
    Nbre_lignes   : constant Index := 10;
    Nbre_colonnes : constant Index := 10;
    Nbre_Mines		: constant Positive := 5;
+   
+   -- bitmap de fond pour affichage de la grille du joueur
+   --Bitmap_Fond : Bitmap_Type;
+   --Nom_Bitmap_fond : constant GString := "fond.bmp";
    
    -------------------
    -- Grille_Joueur --
@@ -50,19 +58,22 @@ package Grilles is
    -- pour la post condition de Remplir_Mines
    -- vérifie que les cases sont bien des valeurs de case_grille_jeu
    
+   
    procedure Remplir_Mines (T: in out Grille_Jeu.Table2d ; nombre : Positive)
      with  
-       Pre		=> nombre in 1 .. Positive(Nbre_lignes*Nbre_colonnes),  
-     	Post	=> Verifier_Contenu(T);
+       Pre	=> nombre in 1 .. Positive(Nbre_lignes*Nbre_colonnes),  
+       Post	=> Verifier_Contenu(T);
    -- Remplit la grille de jeu avec le nombre de mines spécifié
    
-   -- Détermine les cases visibles autour de la cas choisie de proche en proche
-   -- dans la grille de jeu 
-   procedure Déterminer_cases_visibles(ligne : in Index; colonne : in Index);
    
+   procedure Déterminer_cases_visibles(ligne : in Index; colonne : in Index);
+   -- Détermine les cases visibles autour de la cas choisie de proche en proche
+   -- dans la grille de jeu    
+   
+
+   procedure Afficher_Grille_Joueur(canvas : in out Drawing_Canvas_Type);
    -- Affiche la grille du joueur en fonction des cases rendues visibles :
    -- Pour les cases rendues visibles dans la grille du joueur (VISIBLE)
    -- on affiche les cases de la grille de jeu
-    procedure Afficher_Grille_Joueur;
-
+   
 end Grilles;

@@ -1,7 +1,13 @@
 with Text_IO; use Text_IO;
 with Ada.Numerics.Discrete_Random;
+with GWindows.Drawing; use GWindows.Drawing;
+
 package body Grilles is
 
+   ---------
+   -- inc --
+   ---------
+   -- incrémenter
    procedure inc (n : in out Integer)
      with
        Post => n = n'Old + 1
@@ -10,6 +16,10 @@ package body Grilles is
       n := n + 1;
    end;
 
+
+   -----------------------
+   -- Nbre_Mines_Autour --
+   -----------------------
 
    function Nbre_Mines_Autour (T: in out Grille_Jeu.Table2d ; l, c : Index) return Integer is
       nbre_mines : Integer := 0;
@@ -35,7 +45,6 @@ package body Grilles is
          end if;
 
       end if;
-      -- on traite la ligne l-1 (au dessus de la ligne courante)
 
 
       -- on traite la ligne l
@@ -46,7 +55,6 @@ package body Grilles is
       if c < Nbre_Colonnes and then T.Get(l , c + 1) = MINE then
          inc(nbre_mines);
       end if;
-      -- on traite la ligne l
 
 
       -- on traite la ligne l+1 (au dessous de la ligne courante)
@@ -63,7 +71,6 @@ package body Grilles is
          if c < Nbre_Colonnes and then T.Get(l + 1, c + 1) = MINE then
             inc(nbre_mines);
          end if;
-         -- on traite la ligne l+1 (au dessous de la ligne courante)
 
       end if;
 
@@ -129,26 +136,16 @@ package body Grilles is
                if T.Get(l,c) /= MINE then
 
                   case mines_autour is
-                     when 0 =>
-                        null;
-                     when 1 =>
-                        T.Set(l , c , UN);
-                     when 2 =>
-                        T.Set(l , c , DEUX);
-                     when 3 =>
-                        T.Set(l , c , TROIS);
-                     when 4 =>
-                        T.Set(l , c , QUATRE);
-                     when 5 =>
-                        T.Set(l , c , CINQ);
-                     when 6 =>
-                        T.Set(l , c , SIX);
-                     when 7 =>
-                        T.Set(l , c , SEPT);
-                     when 8 =>
-                        T.Set(l , c , HUIT);
-                     when others =>
-                        null;
+                     when 0 => null;
+                     when 1 => T.Set(l , c , UN);
+                     when 2 => T.Set(l , c , DEUX);
+                     when 3 => T.Set(l , c , TROIS);
+                     when 4 => T.Set(l , c , QUATRE);
+                     when 5 => T.Set(l , c , CINQ);
+                     when 6 => T.Set(l , c , SIX);
+                     when 7 => T.Set(l , c , SEPT);
+                     when 8 => T.Set(l , c , HUIT);
+                     when others => null;
                   end case;
 
                end if;
@@ -161,6 +158,12 @@ package body Grilles is
 
    end Remplir_Mines;
 
+
+
+
+   ----------------------
+   -- Verifier_Contenu --
+   ----------------------
 
    function Verifier_Contenu(T : in Grille_Jeu.Table2d) return Boolean is
       -- pour la post condition de Remplir_Mines
@@ -176,6 +179,8 @@ package body Grilles is
 
       return True;
    end;
+
+
 
 
    -------------------------------
@@ -245,36 +250,70 @@ package body Grilles is
    end Déterminer_cases_visibles;
 
 
+
    ----------------------------
    -- Afficher_Grille_Joueur --
    ----------------------------
    -- Affiche la grille du joueur en fonction des cases rendues visibles :
    -- Pour les cases rendues visibles dans la grille du joueur (VISIBLE)
    -- on affiche les cases de la grille de jeu
-   procedure Afficher_Grille_Joueur is
+   procedure Afficher_Grille_Joueur(canvas : in out Drawing_Canvas_Type) is
+      x, y : Integer := 0; -- position de la case courante à afficher
+      case_joueur : case_grille_joueur;
    begin
+
+      -- dessiner le fond d'écran pour l'affichage graphique
+      --  Paint_Bitmap(Canvas => canvas, Bitmap => Bitmap_Fond, X => 0, Y => 0,
+      --               Width  => Integer(Nbre_colonnes) * Bitmap_largeur,
+      --               Height => Integer(Nbre_lignes) * Bitmap_hauteur);
+
+      -- afficher la grille du joueur
       for l in 1..Nbre_Lignes loop
          for c in 1..Nbre_colonnes loop
-            case grille_du_joueur.Get(l, c) is
-               when DRAPEAU => Put("D");
-               when INTERROGATION => Put("?");
-               when VISIBLE => Afficher_Case_Jeu(grille_de_jeu.Get(l, c));
-               when others => Afficher_Case_Joueur(grille_du_joueur.Get(l, c));
+
+            case_joueur := grille_du_joueur.Get(l, c);
+
+            case case_joueur is
+               when DRAPEAU =>
+                  Put("D");
+                  Afficher_Graphique_Case_Joueur(DRAPEAU, canvas, x, y);
+               when INTERROGATION =>
+                  Put("?");
+                  Afficher_Graphique_Case_Joueur(INTERROGATION, canvas, x, y);
+               when VISIBLE =>
+                  Afficher_Case_Jeu(grille_de_jeu.Get(l, c));
+                  Afficher_Graphique_Case_Jeu(grille_de_jeu.Get(l, c), canvas, x, y);
+               when others =>
+                  Afficher_Case_Joueur(case_joueur);
+                  Afficher_Graphique_Case_Joueur(case_joueur, canvas, x, y);
             end case;
-            --  if grille_du_joueur.Get(l, c) = VISIBLE then
-            --     Afficher_Case_Jeu(grille_de_jeu.Get(l, c));
-            --  else
-            --     Afficher_Case_Joueur(grille_du_joueur.Get(l, c));
-            --  end if;
-         end loop;
+
+            x := x + Bitmap_largeur; -- on décale à droite
+
+         end loop; -- loop colonnes
+
          New_Line;
-      end loop;
+
+         -- newline graphique (on se repositionne à gauche et on descend d'une ligne)
+         x := 0;
+         y := y + Bitmap_hauteur;
+
+      end loop; -- loop lignes
+
+      --  redessiner la fenêtre permet d'afficher le contenu du canvas
+      --Redraw (Window => window, Erase => True, Redraw_Now => True);
+
    end Afficher_Grille_Joueur;
+
 
    -------------------------------
    -- initialisation du package --
    -------------------------------
 begin
+   --  charger le fond d'écran en mémoire
+   --Load_Bitmap_From_File (Bitmap => Bitmap_Fond, File_Name => Nom_Bitmap_fond);
+
    -- initialisation de la grille de jeu avec les mines
    Remplir_Mines(T => grille_de_jeu , nombre => Nbre_mines);
+
 end Grilles;
