@@ -22,11 +22,7 @@ package Grilles is
    Nbre_lignes   : constant Index := 10;
    Nbre_colonnes : constant Index := 10;
    Nbre_Mines		: constant Positive := 5;
-   
-   -- bitmap de fond pour affichage de la grille du joueur
-   --Bitmap_Fond : Bitmap_Type;
-   --Nom_Bitmap_fond : constant GString := "fond.bmp";
-   
+     
    -------------------
    -- Grille_Joueur --
    -------------------

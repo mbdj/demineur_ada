@@ -68,7 +68,10 @@ procedure Main is
 
 begin
 
-   Create (Main_Window, "Jeu de démineur", Width => Integer(Nbre_colonnes) * Bitmap_largeur +300, Height => Integer(Nbre_lignes)*Bitmap_hauteur+300);
+   Create (Main_Window, "Jeu de démineur",
+           Width => Integer(Nbre_colonnes) * Bitmap_largeur,
+           Height => Integer(Nbre_lignes) * Bitmap_hauteur);
+
    Visible (Main_Window, True);
 
    On_Destroy_Handler (Main_Window, Gwindows.Events.Do_End_Application'Access);
@@ -78,8 +81,8 @@ begin
    On_Close_Handler (Window => Main_Window, Handler => Do_On_Close'Unrestricted_Access);
    On_Left_Mouse_Button_Down_Handler (Window => Main_Window, Handler => Do_On_Click'Unrestricted_Access);
 
-   Auto_Resize (Main_Window, False);
-   Resize_Canvas (Main_Window, Gwindows.Application.Desktop_Width, Gwindows.Application.Desktop_Height);
+   --Auto_Resize (Main_Window, True);
+   --Resize_Canvas (Main_Window, Gwindows.Application.Desktop_Width, Gwindows.Application.Desktop_Height);
    --  By turning off auto resize and setting canvas to the size of of the desktop contents will be saved no matter how we resize the window
 
    Get_Canvas (Main_Window, Canvas);
@@ -139,7 +142,6 @@ begin
 
    --  traiter les messages (par ex fermeture de fenêtre)
    Gwindows.Application.Message_Check;
-
    Gwindows.Application.Message_Loop;
 
 end Main;

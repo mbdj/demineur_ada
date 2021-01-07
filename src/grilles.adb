@@ -262,11 +262,6 @@ package body Grilles is
       case_joueur : case_grille_joueur;
    begin
 
-      -- dessiner le fond d'écran pour l'affichage graphique
-      --  Paint_Bitmap(Canvas => canvas, Bitmap => Bitmap_Fond, X => 0, Y => 0,
-      --               Width  => Integer(Nbre_colonnes) * Bitmap_largeur,
-      --               Height => Integer(Nbre_lignes) * Bitmap_hauteur);
-
       -- afficher la grille du joueur
       for l in 1..Nbre_Lignes loop
          for c in 1..Nbre_colonnes loop
@@ -290,7 +285,7 @@ package body Grilles is
 
             x := x + Bitmap_largeur; -- on décale à droite
 
-         end loop; -- loop colonnes
+         end loop; -- colonnes
 
          New_Line;
 
@@ -298,10 +293,7 @@ package body Grilles is
          x := 0;
          y := y + Bitmap_hauteur;
 
-      end loop; -- loop lignes
-
-      --  redessiner la fenêtre permet d'afficher le contenu du canvas
-      --Redraw (Window => window, Erase => True, Redraw_Now => True);
+      end loop; -- lignes
 
    end Afficher_Grille_Joueur;
 
@@ -310,9 +302,6 @@ package body Grilles is
    -- initialisation du package --
    -------------------------------
 begin
-   --  charger le fond d'écran en mémoire
-   --Load_Bitmap_From_File (Bitmap => Bitmap_Fond, File_Name => Nom_Bitmap_fond);
-
    -- initialisation de la grille de jeu avec les mines
    Remplir_Mines(T => grille_de_jeu , nombre => Nbre_mines);
 

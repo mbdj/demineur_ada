@@ -81,7 +81,7 @@ package body Type_case is
       -- Put(String(c'Image)(1));
 
       case c is
-         when CACHE => null;		-- pas d'affichage graphique (uniquement console)
+         when CACHE => null;	 Paint_Bitmap(Canvas, Bitmap_cache, X, Y, Bitmap_largeur, Bitmap_hauteur);
          when VISIBLE => null;	-- pas d'affichage graphique (uniquement console)
          when DRAPEAU =>		 Paint_Bitmap(Canvas, Bitmap_drapeau, X, Y, Bitmap_largeur, Bitmap_hauteur);
          when INTERROGATION => Paint_Bitmap(Canvas, Bitmap_interrogation, X, Y, Bitmap_largeur, Bitmap_hauteur);
@@ -92,6 +92,7 @@ package body Type_case is
 
 begin
    -- charger les dessins des cases
+   Load_Bitmap_From_File (Bitmap => Bitmap_cache, File_Name => "caché.bmp");
    Load_Bitmap_From_File (Bitmap => Bitmap_vide, File_Name => "vide.bmp");
    Load_Bitmap_From_File (Bitmap => Bitmap_mine, File_Name => "mine.bmp");
    Load_Bitmap_From_File (Bitmap => Bitmap_un, File_Name => "un.bmp");

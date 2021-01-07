@@ -26,7 +26,7 @@ private
    -- à voir si on peut mettre ces déclarations dans le body ?  --- A ETUDIER ---
    --
 
-   Bitmap_vide, Bitmap_mine, Bitmap_un, Bitmap_deux, Bitmap_trois,
+   Bitmap_cache, Bitmap_vide, Bitmap_mine, Bitmap_un, Bitmap_deux, Bitmap_trois,
      Bitmap_quatre, Bitmap_cinq, Bitmap_six, Bitmap_sept, Bitmap_huit,
      Bitmap_drapeau, Bitmap_interrogation : Bitmap_Type;
 end Type_case;
