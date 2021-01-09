@@ -262,7 +262,6 @@ package body Grilles is
       case_joueur : case_grille_joueur;
    begin
 
-      -- afficher la grille du joueur
       for l in 1..Nbre_Lignes loop
          for c in 1..Nbre_colonnes loop
 
@@ -270,24 +269,22 @@ package body Grilles is
 
             case case_joueur is
                when DRAPEAU =>
-                  Put("D");
+                  -- Put("D");
                   Afficher_Graphique_Case_Joueur(DRAPEAU, canvas, x, y);
                when INTERROGATION =>
-                  Put("?");
+                  -- Put("?");
                   Afficher_Graphique_Case_Joueur(INTERROGATION, canvas, x, y);
                when VISIBLE =>
-                  Afficher_Case_Jeu(grille_de_jeu.Get(l, c));
+                  -- Afficher_Case_Jeu(grille_de_jeu.Get(l, c));
                   Afficher_Graphique_Case_Jeu(grille_de_jeu.Get(l, c), canvas, x, y);
                when others =>
-                  Afficher_Case_Joueur(case_joueur);
+                  -- Afficher_Case_Joueur(case_joueur);
                   Afficher_Graphique_Case_Joueur(case_joueur, canvas, x, y);
             end case;
 
             x := x + Bitmap_largeur; -- on décale à droite
 
          end loop; -- colonnes
-
-         New_Line;
 
          -- newline graphique (on se repositionne à gauche et on descend d'une ligne)
          x := 0;
@@ -297,6 +294,38 @@ package body Grilles is
 
    end Afficher_Grille_Joueur;
 
+
+
+   -------------------------
+   -- Afficher_Grille_Jeu --
+   -------------------------
+   -- Affiche la grille de jeu
+   procedure Afficher_Grille_Jeu(canvas : in out Drawing_Canvas_Type) is
+      x, y : Integer := 0; -- position de la case courante à afficher
+   begin
+
+      for l in 1..Nbre_Lignes loop
+         for c in 1..Nbre_colonnes loop
+            -- Afficher_Case_Jeu(c => grille_de_jeu.Get(l, c));
+
+            Afficher_Graphique_Case_Jeu(c      => grille_de_jeu.Get(l, c),
+                                        Canvas => canvas,
+                                        X      => x,
+                                        Y      => y);
+
+            x := x + Bitmap_largeur; -- on décale à droite
+
+         end loop; -- colonnes
+
+         -- newline graphique (on se repositionne à gauche et on descend d'une ligne)
+         x := 0;
+         y := y + Bitmap_hauteur;
+
+         -- New_Line;
+
+      end loop; -- lignes
+
+   end Afficher_Grille_Jeu;
 
    -------------------------------
    -- initialisation du package --

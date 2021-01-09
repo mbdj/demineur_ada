@@ -26,7 +26,6 @@ package Grilles is
    -------------------
    -- Grille_Joueur --
    -------------------
-
    package Grille_Joueur is new Table2d_pack(Contenu 			 => case_grille_joueur,
                                              Afficher        => Afficher_Case_Joueur,
                                              Nombre_Lignes   => Nbre_lignes,
@@ -40,7 +39,6 @@ package Grilles is
    ----------------
    -- Grille_Jeu --
    ----------------
-
    package Grille_Jeu is new  Table2d_pack(Contenu			=> case_grille_jeu,
                                            Afficher 			=> Afficher_Case_Jeu,
                                            Nombre_Lignes		=> Nbre_lignes,
@@ -71,5 +69,9 @@ package Grilles is
    -- Affiche la grille du joueur en fonction des cases rendues visibles :
    -- Pour les cases rendues visibles dans la grille du joueur (VISIBLE)
    -- on affiche les cases de la grille de jeu
+   
+   procedure Afficher_Grille_Jeu(canvas : in out Drawing_Canvas_Type);
+   -- Affiche la grille de jeu
+   
    
 end Grilles;

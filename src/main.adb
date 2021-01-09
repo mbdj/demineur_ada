@@ -18,6 +18,7 @@ with Gwindows.Drawing_Objects; use Gwindows.Drawing_Objects;
 with Gwindows.Message_Boxes;   use Gwindows.Message_Boxes;
 with GWindows.Windows;         use GWindows.Windows;
 with GNAT.OS_Lib;
+with GWindows.Base; use GWindows.Base;
 
 
 ----------
@@ -30,6 +31,9 @@ procedure Main is
    -- jeu de démineur
    --
 
+
+   Partie_Perdue : Boolean := False;
+   Partie_Gagnée : Boolean := False;
 
    Main_Window : Gwindows.Drawing_Panels.Drawing_Panel_Type;
    Canvas      : Gwindows.Drawing_Panels.Drawing_Canvas_Type;
@@ -48,29 +52,143 @@ procedure Main is
    end Do_On_Close;
 
 
-   -----------------
-   -- Do_On_Click --
-   -----------------
-   procedure Do_On_Click (Windows : in out Gwindows.Base.Base_Window_Type'Class;
-                          X       : in     Integer;
-                          Y       : in     Integer;
-                          Keys    : in     Mouse_Key_States) is
+   ------------
+   -- Gagné --
+   ------------
+
+   function Gagné return Boolean is
+      -- Détermine si le joueur a gagné
+      -- C'est le cas si le nombre de mines trouvées (= nombre de drapeaux posés) est égal au nombre de mines
+      -- et que qu'il n'y a plus de cases cachées
+
+      Nbre_Drapeaux : Integer := 0;
+      Nbre_Cachés   : Integer := 0;
    begin
-      null;
-   end Do_On_Click;
+
+      for l in 1..Nbre_Lignes loop
+         for c in 1..Nbre_colonnes loop
+
+            case grille_du_joueur.Get(l,c) is
+               when CACHE => return False;
+               when DRAPEAU => Nbre_Drapeaux := Nbre_Drapeaux + 1;
+               when others => null;
+            end case;
+         end loop;
+      end loop;
+
+      return Nbre_Drapeaux = Nbre_Mines;
+
+   end Gagné;
 
 
+   ---------------------------
+   -- Récupérer_Coordonnées --
+   ---------------------------
+   procedure Récupérer_Coordonnées(X, Y : in Integer; ligne, colonne : out Integer) is
+      -- Détermine les coordonnées (ligne; colonne) dans la grille
+      -- à partir de la position de la souris
+      -- et des variables globales Bitmap_largeur et Bitmap_hauteur
+   begin
+      ligne   := Y / Bitmap_largeur + 1;
+      colonne := X / Bitmap_hauteur + 1;
+   end;
 
-   Perdu : Boolean := False;	-- le joueur n'a pas perdu et peut donc continuer s'il le souhaite
-   Continuer : Boolean := True;	-- le joueur veut continuer
-   réponse : Character;
-   case_jouée : coordonnees_case_grille;	-- case jouée
+
+   ----------------------
+   -- Do_On_Click_Left --
+   ----------------------
+   procedure Do_On_Click_Left (Windows : in out Gwindows.Base.Base_Window_Type'Class;
+                                X       : in     Integer;
+                                Y       : in     Integer;
+                                Keys    : in     Mouse_Key_States) is
+      l,c : Integer;
+   begin
+      Capture_Mouse (Main_Window);
+      Récupérer_Coordonnées(X,Y,l,c);
+      Release_Mouse;
+
+      if Partie_Perdue or Partie_Gagnée then
+         return;
+      end if;
+
+      if grille_de_jeu.Get(Index(l),Index(c)) = MINE then
+         Partie_Perdue := True;
+
+         Afficher_Grille_Jeu(Canvas);
+         Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
+
+         Message_Box(Window   => Windows,
+                     Title    => "Perdu",
+                     Text     => "Perdu !");
+      else
+         Déterminer_cases_visibles(Index(l),Index(c));
+
+         Afficher_Grille_Joueur(canvas => Canvas);
+         Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
+      end if;
+
+      if Gagné then
+         Partie_Gagnée := True;
+
+         Afficher_Grille_Jeu(Canvas);
+         Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
+
+         Message_Box(Window   => Windows,
+                     Title    => "Gagné",
+                     Text     => "Gagné !");
+      end if;
+
+   end Do_On_Click_Left;
+
+
+   -----------------------
+   -- Do_On_Click_Right --
+   -----------------------
+   procedure Do_On_Click_Right (Windows : in out Gwindows.Base.Base_Window_Type'Class;
+                                X       : in     Integer;
+                                Y       : in     Integer;
+                                Keys    : in     Mouse_Key_States) is
+      -- Le clic droit sert à poser le ? ou le drapeau qui signale une mine
+      l,c : Integer;
+   begin
+
+      if Partie_Perdue or Partie_Gagnée then
+         return;
+      end if;
+
+      Capture_Mouse (Main_Window);
+      Récupérer_Coordonnées(X,Y,l,c);
+      Release_Mouse;
+
+      case grille_du_joueur.Get(Index(l),Index(c)) is
+         when CACHE				=> grille_du_joueur.Set(Index(l),Index(c), Item => INTERROGATION);
+         when INTERROGATION	=> grille_du_joueur.Set(Index(l),Index(c), Item => DRAPEAU);
+         when DRAPEAU			=> grille_du_joueur.Set(Index(l),Index(c), Item => CACHE);
+         when others			=> null;
+      end case;
+
+      Afficher_Grille_Joueur(canvas => Canvas);
+      Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
+
+      if Gagné then
+         Afficher_Grille_Jeu(Canvas);
+         Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
+
+         Message_Box(Window   => Windows,
+                     Title    => "Gagné",
+                     Text     => "Gagné !");
+      end if;
+
+   end Do_On_Click_Right;
+
 
 begin
 
    Create (Main_Window, "Jeu de démineur",
-           Width => Integer(Nbre_colonnes) * Bitmap_largeur,
-           Height => Integer(Nbre_lignes) * Bitmap_hauteur);
+           Width  => Integer(Integer(Nbre_colonnes) * Bitmap_largeur *1.1),
+           Height => Integer(Integer(Nbre_lignes) * Bitmap_hauteur *1.2));
+   -- la taille de la fenêtre n'est pas celle qui correspond aux dimensions en paramètre : POURQUOI ???
+   -- d'où le coefficient multiplicateur qui sert à agrandir artificiellement la fenêtre
 
    Visible (Main_Window, True);
 
@@ -79,7 +197,8 @@ begin
    --  This handler will do that for us.
 
    On_Close_Handler (Window => Main_Window, Handler => Do_On_Close'Unrestricted_Access);
-   On_Left_Mouse_Button_Down_Handler (Window => Main_Window, Handler => Do_On_Click'Unrestricted_Access);
+   On_Left_Mouse_Button_Down_Handler (Window => Main_Window, Handler => Do_On_Click_Left'Unrestricted_Access);
+   On_Right_Mouse_Button_Down_Handler (Window => Main_Window, Handler => Do_On_Click_right'Unrestricted_Access);
 
    --Auto_Resize (Main_Window, True);
    --Resize_Canvas (Main_Window, Gwindows.Application.Desktop_Width, Gwindows.Application.Desktop_Height);
@@ -87,61 +206,14 @@ begin
 
    Get_Canvas (Main_Window, Canvas);
 
-
-   grille_de_jeu.Afficher;
-   New_Line;
+   --grille_de_jeu.Afficher;
+   --New_Line;
 
    Afficher_Grille_Joueur(canvas => Canvas);
    Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
    Gwindows.Application.Message_Check;
-   New_Line;
 
-   --
-   -- Boucle de jeu
-   --
-
-   while not Perdu and Continuer loop
-
-      loop
-         Put_Line("ligne ?"); Get(case_jouée.ligne);
-         exit when case_jouée.ligne >= 1 and case_jouée.ligne <= Grilles.Nbre_lignes;
-      end loop;
-
-      loop
-         Put_Line("colonne ?"); Get(case_jouée.colonne);
-         exit when case_jouée.colonne >= 1 and case_jouée.colonne <= Grilles.Nbre_colonnes;
-      end loop;
-
-
-      if grille_de_jeu.Get(case_jouée.ligne,case_jouée.colonne) = MINE then
-         Perdu := True;
-         Put_Line("Perdu !");
-         New_Line;
-      else
-         Déterminer_cases_visibles(case_jouée.ligne, case_jouée.colonne);
-
-         Afficher_Grille_Joueur(canvas => Canvas);
-         Redraw (Window => Main_Window, Erase => True, Redraw_Now => True);
-         Gwindows.Application.Message_Check;
-         New_Line;
-
-         Put_Line("Voulez-vous continuer (O/n) ?");
-         Get(réponse);
-         Continuer := (if réponse /='o' and réponse /= 'O' then False else True);
-      end if;
-
-      --  traiter les messages (par ex fermeture de fenêtre)
-      Gwindows.Application.Message_Check;
-
-   end loop;
-
-   Put_Line("Au revoir !");
-   New_Line;
-   grille_de_jeu.Afficher;
-   New_Line;
-
-   --  traiter les messages (par ex fermeture de fenêtre)
-   Gwindows.Application.Message_Check;
+   -- boucle des messages
    Gwindows.Application.Message_Loop;
 
 end Main;
