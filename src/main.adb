@@ -184,11 +184,11 @@ procedure Main is
 
 begin
 
-   Create (Main_Window, "Jeu de démineur",
-           Width  => Integer(Integer(Nbre_colonnes) * Bitmap_largeur *1.1),
-           Height => Integer(Integer(Nbre_lignes) * Bitmap_hauteur *1.2));
-   -- la taille de la fenêtre n'est pas celle qui correspond aux dimensions en paramètre : POURQUOI ???
-   -- d'où le coefficient multiplicateur qui sert à agrandir artificiellement la fenêtre
+   Create (Main_Window, "Jeu de démineur");
+
+   Main_Window.Client_Area_Size(Width  => Integer(Integer(Nbre_colonnes) * Bitmap_largeur),
+                                Height => Integer(Integer(Nbre_lignes) * Bitmap_hauteur));
+
 
    Visible (Main_Window, True);
 
