@@ -1,20 +1,13 @@
 with Text_IO; use Text_IO;
-with Type_Index; use Type_Index.Index_IO;
 
 with Grilles; use Grilles;
 with Type_case;  use Type_case;
 with Type_Index; use Type_Index;
 
 -- Pour les graphiques : bibliothèque GWindows
-with Gwindows.Windows.Main;    use Gwindows.Windows.Main;
 with Gwindows.Drawing_Panels;  use Gwindows.Drawing_Panels;
-with Gwindows.Scroll_Panels;   use Gwindows.Scroll_Panels;
-with Gwindows.Drawing;         use Gwindows.Drawing;
-with Gwindows.Colors;          use Gwindows.Colors;
 with Gwindows.Events;
-with Gwindows.Base;
 with Gwindows.Application;
-with Gwindows.Drawing_Objects; use Gwindows.Drawing_Objects;
 with Gwindows.Message_Boxes;   use Gwindows.Message_Boxes;
 with GWindows.Windows;         use GWindows.Windows;
 with GNAT.OS_Lib;
